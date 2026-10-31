@@ -1,0 +1,35 @@
+# Environment and Secret Files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.pfx
+
+# Dependency directories
+node_modules/
+
+# Logs and debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Database and Storage
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data/*.json.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE and Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

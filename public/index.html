@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedOut - Where Professionals Confess Why They Really Quit</title>
+  <meta name="description" content="The anonymous whistleblower network for corporate employees to share uncensored resignation stories, rate toxic companies, and expose red flags safely.">
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar (Reverse-Engineered LinkedIn Header) -->
+  <header class="navbar" id="top-nav">
+    <div class="nav-container">
+      <div class="nav-left">
+        <a href="/" class="brand-logo" id="brand-logo" title="LinkedOut Home">
+          <span class="brand-badge">LO</span>
+          <div class="brand-text">Linked<span>Out</span></div>
+        </a>
+
+        <!-- Global Search -->
+        <div class="search-wrapper">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="global-search-input" class="search-input" placeholder="Search toxic companies, roles, or #tags..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-center" aria-label="Main Navigation">
+        <button class="nav-link active" id="nav-feed-btn" title="Resignation Feed">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 11a9 9 0 0 1 9 9"></path>
+            <path d="M4 4a16 16 0 0 1 16 16"></path>
+            <circle cx="5" cy="19" r="1"></circle>
+          </svg>
+          <span>Feed</span>
+        </button>
+
+        <button class="nav-link" id="nav-radar-btn" title="Company Red Flag Radar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+            <line x1="4" y1="22" x2="4" y2="15"></line>
+          </svg>
+          <span>Radar</span>
+        </button>
+
+        <button class="nav-link" id="nav-create-btn" title="Post Exit Story">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+          <span>Spill Tea</span>
+        </button>
+
+        <button class="nav-link" id="nav-audit-btn" title="Security & Shield Audit">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>Security Audit</span>
+        </button>
+
+        <button class="nav-link" id="nav-admin-btn" title="Admin Portal">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span>Admin</span>
+        </button>
+      </nav>
+
+      <!-- Right Actions: Theme Toggle & User Auth Capsule -->
+      <div class="nav-right">
+        <!-- Theme Toggle -->
+        <button class="btn btn-outline btn-icon-only" id="theme-toggle-btn" title="Toggle Light/Dark Theme">
+          <span id="theme-icon">☀️</span>
+        </button>
+
+        <!-- Dynamic User Capsule -->
+        <div id="auth-section">
+          <!-- Populated by auth.js -->
+          <div class="user-capsule" id="user-capsule-btn">
+            <div class="user-avatar-mini" id="capsule-avatar" style="background: linear-gradient(135deg, #ff416c, #ff4b2b)">LO</div>
+            <div class="user-alias-label" id="capsule-alias">Stealth Whistleblower</div>
+            <span class="stealth-indicator" title="Identity Scrubbed & Secure"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Grid App Container -->
+  <main class="app-container" id="main-content">
+
+    <!-- LEFT SIDEBAR: Whistleblower Persona & Toxic Filters -->
+    <aside class="left-sidebar" aria-label="Whistleblower Profile & Filters">
+      <!-- Persona Card -->
+      <div class="card profile-card">
+        <div class="profile-cover"></div>
+        <div class="profile-avatar-container">
+          <div class="profile-avatar" id="sidebar-avatar" style="background: linear-gradient(135deg, #8a2387, #e94057, #f27121);">
+            🕵️
+          </div>
+        </div>
+        <div class="profile-info">
+          <h2 class="profile-name" id="sidebar-alias">Stealth Whistleblower</h2>
+          <div class="profile-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Zero-PII Active
+          </div>
+          <p style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.3;">
+            Your IP is scrubbed at the gateway. No corporate tracking allowed.
+          </p>
+
+          <div class="profile-stats">
+            <div class="stat-box">
+              <span class="stat-num" id="stat-posts-count">4</span>
+              <span class="stat-label">Exits Shared</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-num" id="stat-resonated-count">87</span>
+              <span class="stat-label">Resonated</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn btn-outline btn-sm" style="width: 100%;" id="randomize-alias-btn" title="Generate New Burner Persona">
+            🎲 Switch Burner Alias
+          </button>
+        </div>
+      </div>
+
+      <!-- Toxic Category Quick Filters -->
+      <div class="card filter-menu-card">
+        <div class="filter-title">Filter by Toxicity Type</div>
+        <div class="filter-item active" data-tag="">
+          <span>🚩 All Red Flags</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">All</span>
+        </div>
+        <div class="filter-item" data-tag="Return-to-Office Mandate">
+          <span>🏢 RTO Mandates</span>
+        </div>
+        <div class="filter-item" data-tag="Weekend Slack Pings">
+          <span>📱 Weekend Pings</span>
+        </div>
+        <div class="filter-item" data-tag="Gaslighting & PIPs">
+          <span>📉 PIP Gaslighting</span>
+        </div>
+        <div class="filter-item" data-tag="Unpaid Overtime">
+          <span>⏳ 80hr Workweeks</span>
+        </div>
+        <div class="filter-item" data-tag="Micromanagement">
+          <span>👀 Micromanagement</span>
+        </div>
+        <div class="filter-item" data-tag="Phantom Equity">
+          <span>💸 Fake Equity</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER COLUMN: Feed & Composer -->
+    <section class="main-feed" aria-label="Resignation Feed">
+
+      <!-- LinkedIn-style Share Prompt Box -->
+      <div class="card composer-box">
+        <div class="composer-top">
+          <div class="user-avatar-mini" id="composer-avatar" style="background: linear-gradient(135deg, #00c6ff, #0072ff); width: 38px; height: 38px; font-size: 1rem;">
+            🔥
+          </div>
+          <button class="composer-prompt-btn" id="open-composer-trigger">
+            Spill the real tea on why you quit your toxic job...
+          </button>
+        </div>
+        <div class="composer-actions">
+          <div class="composer-badge-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            100% Anonymous · IP Scrubbed · End-to-End Encrypted
+          </div>
+          <button class="btn btn-primary btn-sm" id="composer-direct-btn">
+            Burn the Bridge
+          </button>
+        </div>
+      </div>
+
+      <!-- Feed Filter Tabs & Sorting -->
+      <div class="feed-filter-bar">
+        <div class="sort-tabs">
+          <button class="sort-tab active" data-sort="newest">✨ Recent Exits</button>
+          <button class="sort-tab" data-sort="redflags">🚩 Nuclear Red Flags</button>
+          <button class="sort-tab" data-sort="popular">🔥 Most Resonated</button>
+        </div>
+        <div class="active-filter-indicator" id="active-tag-indicator"></div>
+      </div>
+
+      <!-- Posts Container (Dynamic Feed) -->
+      <div id="posts-container" class="posts-feed">
+        <!-- Rendered by app.js -->
+        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+          Loading uncensored resignation stories...
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT SIDEBAR: Radar, Jargon Translator, Security Status -->
+    <aside class="right-sidebar" aria-label="Toxicity Radar & Security Status">
+
+      <!-- Red Flag Radar Leaderboard -->
+      <div class="card radar-card">
+        <div class="widget-header">
+          <h3 class="widget-title">
+            <span>🚩</span> Toxic Leaderboard
+          </h3>
+          <span style="font-size: 0.75rem; color: var(--toxic-red); font-weight: 700;">Live Score</span>
+        </div>
+        <div class="radar-list" id="radar-companies-list">
+          <!-- Populated by app.js -->
+        </div>
+      </div>
+
+      <!-- Corporate BS Translator Widget -->
+      <div class="card jargon-card">
+        <div class="widget-header">
+          <h3 class="widget-title">
+            <span>💬</span> Corporate BS Translator
+          </h3>
+        </div>
+        <div class="jargon-pair">
+          <div class="jargon-fake">"We work hard, play hard!"</div>
+          <div class="jargon-real">👉 70-hour mandatory workweeks with lukewarm pizza on Thursdays.</div>
+        </div>
+        <div class="jargon-pair">
+          <div class="jargon-fake">"We are like a family here."</div>
+          <div class="jargon-real">👉 Dysfunctional boundaries; emotional guilt when taking sick days.</div>
+        </div>
+        <div class="jargon-pair">
+          <div class="jargon-fake">"Unlimited PTO policy."</div>
+          <div class="jargon-real">👉 Zero payout when you quit; judged if you take more than 9 days.</div>
+        </div>
+      </div>
+
+      <!-- Security Shield Widget -->
+      <div class="card security-status-card">
+        <div class="shield-pulse-wrapper">
+          <span class="shield-pulse-dot"></span>
+          <strong style="font-size: 0.85rem; color: var(--accent-emerald);">Vault Defense Active</strong>
+        </div>
+        <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+          • CSP locked & Helmet headers<br>
+          • bcrypt-12 salted credentials<br>
+          • XSS sanitization on every payload<br>
+          • Zero PII logged or stored
+        </p>
+        <button class="btn btn-outline btn-sm" style="width: 100%;" id="sidebar-run-audit-btn">
+          🛡️ Run Full Security Audit
+        </button>
+      </div>
+
+    </aside>
+  </main>
+
+  <!-- ========================================================
+       MODALS
+       ======================================================== -->
+
+  <!-- 1. Post Resignation Story Modal -->
+  <div class="modal-overlay" id="post-modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <span>💣</span> Share Your Real Resignation Story
+        </h3>
+        <button class="modal-close-btn" data-close-modal="post-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="input-company">Company Name *</label>
+          <input type="text" id="input-company" class="form-input" placeholder="e.g. OmniCloud, MetaCorp, Apex Advisory" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="input-role">Job Title Held</label>
+            <input type="text" id="input-role" class="form-input" placeholder="e.g. Senior Backend Engineer">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="input-tenure">Tenure</label>
+            <input type="text" id="input-tenure" class="form-input" placeholder="e.g. 1 year 4 months">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label" for="select-resignation-type">Departure Style</label>
+            <select id="select-resignation-type" class="form-select">
+              <option value="Rage Quit">💥 Rage Quit on the Spot</option>
+              <option value="Quiet Quit -> Severance">💼 Quiet Quit -> Severance Bag</option>
+              <option value="Dodged the PIP">🛡️ Dodged the Weaponized PIP</option>
+              <option value="Left for 2x Pay & Mental Peace">🚀 Left for 2x Pay & Mental Peace</option>
+              <option value="Whistleblower Exit">📢 Whistleblower Clean Exit</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Red Flag Meter: <span id="redflag-display-num">8.5</span> / 10
+            </label>
+            <div class="redflag-slider-wrapper">
+              <input type="range" id="input-redflag-range" class="redflag-range" min="1.0" max="10.0" step="0.1" value="8.5">
+              <div class="redflag-score-badge" id="redflag-badge-indicator">🚩 8.5</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toxicity Tag Chips Selector -->
+        <div class="form-group">
+          <label class="form-label">Select Red Flag Tags</label>
+          <div class="tag-chips-wrapper" id="composer-tags-container">
+            <div class="tag-chip selected" data-value="Micromanagement">Micromanagement</div>
+            <div class="tag-chip selected" data-value="Weekend Slack Pings">Weekend Slack Pings</div>
+            <div class="tag-chip" data-value="Return-to-Office Mandate">Return-to-Office Mandate</div>
+            <div class="tag-chip" data-value="Gaslighting & PIPs">Gaslighting & PIPs</div>
+            <div class="tag-chip" data-value="Unpaid Overtime">Unpaid Overtime</div>
+            <div class="tag-chip" data-value="Phantom Equity">Phantom Equity</div>
+            <div class="tag-chip" data-value="Fake Culture">Fake Culture</div>
+            <div class="tag-chip" data-value="Ghosting Promotions">Ghosting Promotions</div>
+            <div class="tag-chip" data-value="Severance Drama">Severance Drama</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-headline">Catchy Exit Headline *</label>
+          <input type="text" id="input-headline" class="form-input" placeholder="e.g. I quit after leadership demanded 70 hours a week for a 'team pizza party'">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-story">The Uncensored Resignation Story *</label>
+          <textarea id="input-story" class="form-textarea" placeholder="Detail what actually happened. Toxic management behavior, unkept promises, final breaking point..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="input-advice">Parting Advice for Candidates</label>
+          <input type="text" id="input-advice" class="form-input" placeholder="e.g. Run if the hiring manager says 'we are all like family here'">
+        </div>
+
+        <div class="form-group" style="background: var(--bg-surface); padding: 0.75rem; border-radius: var(--radius-sm);">
+          <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+            <input type="checkbox" id="check-anonymize-alias" checked>
+            <span>Publish with Burner Persona (Guarantees zero link to real identity)</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" data-close-modal="post-modal">Cancel</button>
+        <button class="btn btn-primary" id="submit-post-btn">
+          🔒 Publish Anonymously
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Interactive Security Audit Modal -->
+  <div class="modal-overlay" id="audit-modal" role="dialog" aria-modal="true">
+    <div class="modal-content" style="max-width: 780px;">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <span>🛡️</span> Real-Time Security Audit & Control Center
+        </h3>
+        <button class="modal-close-btn" data-close-modal="audit-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary);">
+          Automated live verification verifying all defensive specifications:
+          hidden API keys, environment variables isolation, admin route gatekeeping,
+          bcrypt-12 password hashing, rate limiting, XSS filtering, CORS lockdown,
+          and production debug mode suppression.
+        </p>
+
+        <!-- Summary Banner -->
+        <div id="audit-summary-banner" style="background: var(--bg-surface); border: 1px solid var(--border-subtle); padding: 1rem; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Overall Status</div>
+            <strong id="audit-overall-status" style="font-size: 1.1rem; color: var(--accent-emerald);">Running Diagnostic...</strong>
+          </div>
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Controls Verified</div>
+            <strong id="audit-score" style="font-size: 1.1rem; color: var(--text-primary);">- / 12</strong>
+          </div>
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Audit Latency</div>
+            <strong id="audit-latency" style="font-size: 1.1rem; color: var(--brand-blue);">- ms</strong>
+          </div>
+        </div>
+
+        <!-- Table of checks -->
+        <div style="max-height: 380px; overflow-y: auto; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+          <table class="audit-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Security Control</th>
+                <th>Defense Mechanism</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="audit-table-body">
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">
+                  Querying security engine...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="re-run-audit-btn">
+          ⚡ Re-Run Live Audit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Authentication & Account Modal -->
+  <div class="modal-overlay" id="auth-modal" role="dialog" aria-modal="true">
+    <div class="modal-content" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="auth-modal-title">
+          <span>🔐</span> Whistleblower Access
+        </h3>
+        <button class="modal-close-btn" data-close-modal="auth-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Auth Tabs -->
+        <div style="display: flex; border-bottom: 1px solid var(--border-subtle); margin-bottom: 1rem;">
+          <button id="auth-tab-login" class="sort-tab active" style="flex: 1; text-align: center; border-radius: 0;">Sign In</button>
+          <button id="auth-tab-register" class="sort-tab" style="flex: 1; text-align: center; border-radius: 0;">Burner Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form">
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label class="form-label" for="login-username">Username or Alias</label>
+            <input type="text" id="login-username" class="form-input" placeholder="e.g. ex_tech_lead" required autocomplete="username">
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label class="form-label" for="login-password">Password</label>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••••••" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            Sign In Securely
+          </button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" style="display: none;">
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label class="form-label" for="reg-username">Choose Secret Username *</label>
+            <input type="text" id="reg-username" class="form-input" placeholder="e.g. quiet_quitter_99" required autocomplete="username">
+          </div>
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label class="form-label" for="reg-email">Account Recovery Email *</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="recovery@proton.me" required autocomplete="email">
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Hashed with HMAC-SHA256 salt. Never stored in plain text.</span>
+          </div>
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label class="form-label" for="reg-password">Password (bcrypt-12) *</label>
+            <input type="password" id="reg-password" class="form-input" placeholder="Min 8 characters" minlength="8" required autocomplete="new-password">
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label class="form-label" for="reg-alias">Public Whistleblower Persona</label>
+            <input type="text" id="reg-alias" class="form-input" placeholder="e.g. Ex-Senior SRE #404">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">
+            Create Anonymous Account
+          </button>
+        </form>
+
+        <div id="auth-error-msg" style="color: var(--toxic-red); font-size: 0.8rem; margin-top: 0.75rem; text-align: center; display: none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Protected Admin Portal Modal -->
+  <div class="modal-overlay" id="admin-modal" role="dialog" aria-modal="true">
+    <div class="modal-content" style="max-width: 740px;">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <span>🛡️</span> Protected Admin & Moderation Portal
+        </h3>
+        <button class="modal-close-btn" data-close-modal="admin-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="admin-auth-panel">
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+            This route is strictly guarded by timing-safe cryptographic comparisons and role-based access control.
+          </p>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label class="form-label" for="admin-key-input">Admin API Secret Key</label>
+            <input type="password" id="admin-key-input" class="form-input" placeholder="Enter ADMIN_API_KEY">
+          </div>
+          <button class="btn btn-primary" id="admin-unlock-btn">
+            Unlock Admin Vault
+          </button>
+        </div>
+
+        <div id="admin-dashboard-panel" style="display: none;">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem;">
+            <div class="card" style="padding: 1rem; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Total Submissions</div>
+              <strong id="admin-total-posts" style="font-size: 1.4rem; color: var(--text-primary);">-</strong>
+            </div>
+            <div class="card" style="padding: 1rem; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Security Events</div>
+              <strong id="admin-audit-count" style="font-size: 1.4rem; color: var(--accent-emerald);">-</strong>
+            </div>
+            <div class="card" style="padding: 1rem; text-align: center;">
+              <div style="font-size: 0.75rem; color: var(--text-muted);">Server Uptime</div>
+              <strong id="admin-uptime" style="font-size: 1.4rem; color: var(--brand-blue);">-s</strong>
+            </div>
+          </div>
+
+          <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem;">Tamper-Proof Audit Trail (Zero-PII)</h4>
+          <div style="max-height: 250px; overflow-y: auto; background: var(--bg-surface); padding: 0.5rem; border-radius: var(--radius-sm); font-family: monospace; font-size: 0.75rem;" id="admin-audit-logs-view">
+            Loading logs...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/auth.js"></script>
+  <script src="/js/audit.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
