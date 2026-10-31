@@ -9,6 +9,8 @@ require('dotenv').config();
 // Ensure required environment variables exist with fallback or error
 const JWT_SECRET = process.env.JWT_SECRET || 'dev_fallback_secret_linkedout_whistleblower_32chars_long';
 const ADMIN_API_KEY = process.env.ADMIN_API_KEY || 'linkedout_admin_vault_secret_pass_2026';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@linkedout.secure';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'SuperAdminPassword#2026!LinkedOut';
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const NODE_ENV = process.env.NODE_ENV || 'production';
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
@@ -50,6 +52,8 @@ function getSanitizedSecurityProfile() {
 module.exports = {
   JWT_SECRET,
   ADMIN_API_KEY,
+  ADMIN_EMAIL,
+  ADMIN_PASSWORD,
   PORT,
   NODE_ENV,
   CORS_ORIGIN,

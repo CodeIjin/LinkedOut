@@ -5,7 +5,7 @@
  */
 
 const crypto = require('crypto');
-const { ADMIN_API_KEY } = require('../config/security');
+const { ADMIN_API_KEY, ADMIN_PASSWORD } = require('../config/security');
 
 /**
  * Timing-safe string comparison
@@ -29,7 +29,7 @@ function requireAdmin(req, res, next) {
 
   // Check for admin API header (for automated scripts or dashboard access)
   const providedKey = req.headers['x-admin-key'];
-  if (providedKey && safeCompare(providedKey, ADMIN_API_KEY)) {
+  if (providedKey && (safeCompare(providedKey, ADMIN_API_KEY) || (ADMIN_PASSWORD && safeCompare(providedKey, ADMIN_PASSWORD)))) {
     req.isAdmin = true;
     return next();
   }

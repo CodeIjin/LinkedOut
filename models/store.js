@@ -6,7 +6,7 @@
 
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const { ANONYMIZATION_SALT } = require('../config/security');
+const { ANONYMIZATION_SALT, ADMIN_EMAIL, ADMIN_PASSWORD } = require('../config/security');
 
 // In-memory data store with atomic operations
 const users = new Map();
@@ -66,6 +66,7 @@ async function createUser({ username, email, password, role = 'user', anonymousA
   const user = {
     id,
     username: username.toLowerCase(),
+    email: email.toLowerCase(),
     emailHash: hashWhistleblowerIdentity(email),
     passwordHash,
     role,
@@ -88,10 +89,11 @@ async function createUser({ username, email, password, role = 'user', anonymousA
   };
 }
 
-async function findUserByUsername(username) {
-  const searchName = username.toLowerCase();
+async function findUserByUsername(identifier) {
+  if (!identifier || typeof identifier !== 'string') return null;
+  const searchName = identifier.toLowerCase().trim();
   for (const user of users.values()) {
-    if (user.username === searchName) {
+    if (user.username === searchName || (user.email && user.email === searchName)) {
       return user;
     }
   }
@@ -379,13 +381,13 @@ function getSecurityAuditLogs() {
  * Initialize with realistic, hilarious seed exit stories & default accounts
  */
 async function initializeSeedData() {
-  // Create admin account
+  // Create primary admin account from secure environment configuration
   const adminUser = await createUser({
-    username: 'linkedout_admin',
-    email: 'admin@linkedout.secure',
-    password: 'SuperAdminPassword#2026!LinkedOut',
+    username: ADMIN_EMAIL,
+    email: ADMIN_EMAIL,
+    password: ADMIN_PASSWORD,
     role: 'admin',
-    anonymousAlias: 'LinkedOut Vault Overseer'
+    anonymousAlias: 'LinkedOut Chief Admin'
   });
 
   // Create demo verified whistleblower user

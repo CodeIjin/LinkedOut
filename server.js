@@ -125,7 +125,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Single Page Application Fallback (redirect unknown client routes to index.html)
-app.get('*', (req, res, next) => {
+app.use((req, res, next) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ success: false, error: 'API endpoint not found.' });
   }

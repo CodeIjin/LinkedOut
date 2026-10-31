@@ -632,9 +632,53 @@ document.addEventListener('DOMContentLoaded', () => {
   const adminDashPanel = document.getElementById('admin-dashboard-panel');
   const adminLogsView = document.getElementById('admin-audit-logs-view');
 
+  async function loadAdminDashboard(customKey = null) {
+    const headers = {};
+    if (customKey) {
+      headers['x-admin-key'] = customKey;
+    }
+    const token = AuthManager.getToken();
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    try {
+      const res = await fetch('/api/admin/overview', { headers });
+      const data = await res.json();
+      if (data.success && data.data) {
+        adminAuthPanel.style.display = 'none';
+        adminDashPanel.style.display = 'block';
+
+        document.getElementById('admin-total-posts').textContent = data.data.totalPosts;
+        document.getElementById('admin-audit-count').textContent = data.data.auditEventsRecorded;
+        document.getElementById('admin-uptime').textContent = `${data.data.serverUptimeSeconds}s`;
+
+        const logsRes = await fetch('/api/admin/audit-logs', { headers });
+        const logsData = await logsRes.json();
+        if (logsData.success && logsData.logs) {
+          adminLogsView.innerHTML = logsData.logs.map(log => `
+            <div style="padding: 4px 0; border-bottom: 1px solid var(--border-subtle);">
+              <span style="color: var(--accent-emerald);">[${log.timestamp.substring(11, 19)}]</span>
+              <strong style="color: var(--brand-blue);">${log.eventType}:</strong>
+              ${JSON.stringify(log.details)}
+            </div>
+          `).join('');
+        }
+        return true;
+      }
+    } catch (e) {
+      console.error('Failed to load admin overview:', e);
+    }
+    return false;
+  }
+
   if (navAdminBtn) {
-    navAdminBtn.addEventListener('click', () => {
+    navAdminBtn.addEventListener('click', async () => {
       if (adminModal) adminModal.classList.add('active');
+      const user = AuthManager.getUser();
+      if (user && user.role === 'admin') {
+        await loadAdminDashboard();
+      }
     });
   }
 
@@ -644,45 +688,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!key) return;
 
       adminUnlockBtn.textContent = 'Verifying Timing-Safe Key...';
-
-      try {
-        const res = await fetch('/api/admin/overview', {
-          headers: {
-            'x-admin-key': key
-          }
-        });
-
-        const data = await res.json();
-        if (data.success && data.data) {
-          adminAuthPanel.style.display = 'none';
-          adminDashPanel.style.display = 'block';
-
-          document.getElementById('admin-total-posts').textContent = data.data.totalPosts;
-          document.getElementById('admin-audit-count').textContent = data.data.auditEventsRecorded;
-          document.getElementById('admin-uptime').textContent = `${data.data.serverUptimeSeconds}s`;
-
-          // Load logs
-          const logsRes = await fetch('/api/admin/audit-logs', {
-            headers: { 'x-admin-key': key }
-          });
-          const logsData = await logsRes.json();
-          if (logsData.success && logsData.logs) {
-            adminLogsView.innerHTML = logsData.logs.map(log => `
-              <div style="padding: 4px 0; border-bottom: 1px solid var(--border-subtle);">
-                <span style="color: var(--accent-emerald);">[${log.timestamp.substring(11, 19)}]</span>
-                <strong style="color: var(--brand-blue);">${log.eventType}:</strong>
-                ${JSON.stringify(log.details)}
-              </div>
-            `).join('');
-          }
-        } else {
-          alert('Access Forbidden: Invalid Admin Key.');
-        }
-      } catch (e) {
-        alert('Admin authentication failed.');
-      } finally {
-        adminUnlockBtn.textContent = 'Unlock Admin Vault';
+      const success = await loadAdminDashboard(key);
+      if (!success) {
+        alert('Access Forbidden: Invalid Admin Key or insufficient privileges.');
       }
+      adminUnlockBtn.textContent = 'Unlock Admin Vault';
     });
   }
 
